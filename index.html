@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USET Admission Form - CSE445 Assignment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a3a5c;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* header styling */
+        header {
+            background: #0f2940;
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header-wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .header-wrap img.uni-logo {
+            height: 70px;
+            width: auto;
+            background: #fff;
+            padding: 5px;
+            border-radius: 8px;
+        }
+        
+        .uni-title h1 {
+            font-size: 26px;
+            font-weight: bold;
+        }
+        
+        .uni-title p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        /* main content area */
+        .main-container {
+            max-width: 880px;
+            margin: 35px auto;
+            padding: 0 15px;
+        }
+
+        .form-wrapper {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .form-top {
+            background: linear-gradient(to right, #2575a8, #3a8cc7);
+            color: #fff;
+            padding: 22px 25px;
+            text-align: center;
+        }
+        
+        .form-top h2 { font-size: 22px; margin-bottom: 4px; }
+        .form-top p { font-size: 13px; opacity: 0.9; }
+
+        .form-content {
+            padding: 28px;
+        }
+
+        /* each section of form */
+        .section {
+            margin-bottom: 28px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #e8eef3;
+        }
+        .section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1a3a5c;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .sec-num {
+            width: 28px;
+            height: 28px;
+            background: #3498db;
+            color: #fff;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        /* form grid */
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        
+        .field { display: flex; flex-direction: column; }
+        .field.wide { grid-column: span 2; }
+
+        /* labels */
+        label {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .req::after {
+            content: " *";
+            color: #d63031;
+        }
+
+        /* input fields */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #dde4eb;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #f7f9fb;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.12);
+        }
+
+        input[type="file"] {
+            padding: 9px;
+            border: 2px solid #dde4eb;
+            border-radius: 6px;
+            background: #f7f9fb;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        input[type="file"]::file-selector-button {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: #2980b9;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        /* radio and checkbox */
+        .radio-options, .check-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding: 8px 0;
+        }
+        
+        .radio-opt, .check-opt {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        input[type="radio"], input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #3498db;
+        }
+        
+        .radio-opt label, .check-opt label {
+            cursor: pointer;
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        /* validation */
+        input:invalid:not(:placeholder-shown) {
+            border-color: #e74c3c;
+        }
+        input:valid:not(:placeholder-shown) {
+            border-color: #27ae60;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+        .err-msg {
+            font-size: 11px;
+            color: #e74c3c;
+            margin-top: 4px;
+            display: none;
+        }
+        input:invalid:not(:placeholder-shown) + .err-msg {
+            display: block;
+        }
+
+        /* buttons */
+        .btn-area {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 35px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(39,174,96,0.35);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(39,174,96,0.45);
+        }
+        
+        .btn-reset {
+            background: linear-gradient(to right, #95a5a6, #bdc3c7);
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(149,165,166,0.35);
+        }
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(149,165,166,0.45);
+        }
+
+        /* footer */
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: rgba(255,255,255,0.75);
+            font-size: 13px;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        footer a:hover { text-decoration: underline; }
+
+        /* responsive styles */
+        @media (max-width: 768px) {
+            .header-wrap {
+                flex-direction: column;
+                text-align: center;
+            }
+            .uni-title h1 { font-size: 20px; }
+            
+            .row { grid-template-columns: 1fr; }
+            .field.wide { grid-column: span 1; }
+            
+            .form-content { padding: 18px; }
+            .form-top { padding: 18px; }
+            .form-top h2 { font-size: 18px; }
+            
+            .btn-area { flex-direction: column; }
+            .btn { width: 100%; }
+            
+            .radio-options, .check-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-container {
+                margin: 20px auto;
+                padding: 0 10px;
+            }
+            .header-wrap img.uni-logo { height: 55px; }
+            .uni-title h1 { font-size: 17px; }
+            .section-heading { font-size: 15px; }
+        }
+
+        /* print */
+        @media print {
+            body { background: #fff; }
+            .form-wrapper { box-shadow: none; }
+            .btn { display: none; }
+            .guidelines-box { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-wrap">
+            <img src="uset-logo.png" alt="USET Logo" class="uni-logo">
+            <div class="uni-title">
+                <h1>University of Skill Enrichment and Technology (USET)</h1>
+                <p>Empowering Skills, Enriching Futures</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="form-wrapper">
+            <div class="form-top">
+                <h2>Undergraduate Admission Application Form</h2>
+                <p>Academic Session 2025-2026</p>
+            </div>
+
+            <form class="form-content" action="#" method="POST" enctype="multipart/form-data">
+                
+                <!-- personal info -->
+                <div class="section">
+                    <h3 class="section-heading">
+                        <span class="sec-num">1</span>
+                        Personal Information
+                    </h3>
+                    <div class="row">
+                        <div class="field">
+                            <label for="fname" class="req">Full Name</label>
+                            <input type="text" id="fname" name="fname" placeholder="Enter your full name" required pattern="[A-Za-z\s]{2,50}">
+                            <span class="err-msg">Please enter a valid name</span>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="dob" class="req">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required max="2010-12-31" min="1990-01-01">
+                        </div>
+                        
+                        <div class="field">
+                            <label class="req">Gender</label>
+                            <div class="radio-options">
+                                <div class="radio-opt">
+                                    <input type="radio" id="g_male" name="gender" value="male" required>
+                                    <label for="g_male">Male</label>
+                                </div>
+                                <div class="radio-opt">
+                                    <input type="radio" id="g_female" name="gender" value="female">
+                                    <label for="g_female">Female</label>
+                                </div>
+                                <div class="radio-opt">
+                                    <input type="radio" id="g_other" name="gender" value="other">
+                                    <label for="g_other">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="email" class="req">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="yourname@example.com" required>
+                            <span class="err-msg">Enter a valid email</span>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="phone" class="req">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+880 1XXX-XXXXXX" required pattern="[0-9+\-\s\(\)]{10,20}">
+                            <span class="hint">Include country code</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- address section -->
+                <div class="section">
+                    <h3 class="section-heading">
+                        <span class="sec-num">2</span>
+                        Address Details
+                    </h3>
+                    <div class="row">
+                        <div class="field wide">
+                            <label for="street" class="req">Street Address</label>
+                            <input type="text" id="street" name="street" placeholder="House No, Road, Area" required>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="city" class="req">City</label>
+                            <input type="text" id="city" name="city" placeholder="Dhaka" required>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="state" class="req">State / Division</label>
+                            <input type="text" id="state" name="state" placeholder="Dhaka Division" required>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="zip" class="req">Postal Code</label>
+                            <input type="text" id="zip" name="zip" placeholder="1205" required pattern="[A-Za-z0-9\s\-]{3,10}">
+                        </div>
+                        
+                        <div class="field">
+                            <label for="country" class="req">Country</label>
+                            <select id="country" name="country" required>
+                                <option value="">-- Select Country --</option>
+                                <option value="BD" selected>Bangladesh</option>
+                                <option value="IN">India</option>
+                                <option value="PK">Pakistan</option>
+                                <option value="NP">Nepal</option>
+                                <option value="LK">Sri Lanka</option>
+                                <option value="US">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="MY">Malaysia</option>
+                                <option value="SG">Singapore</option>
+                                <option value="AE">UAE</option>
+                                <option value="SA">Saudi Arabia</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- educational background -->
+                <div class="section">
+                    <h3 class="section-heading">
+                        <span class="sec-num">3</span>
+                        Educational Background
+                    </h3>
+                    <div class="row">
+                        <div class="field wide">
+                            <label for="school" class="req">High School / College Name</label>
+                            <input type="text" id="school" name="school" placeholder="Notre Dame College, Dhaka" required>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="grad_yr" class="req">Graduation Year</label>
+                            <select id="grad_yr" name="grad_yr" required>
+                                <option value="">-- Select Year --</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                            </select>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="gpa" class="req">GPA / Percentage</label>
+                            <input type="number" id="gpa" name="gpa" placeholder="4.50 or 85" step="0.01" min="0" max="100" required>
+                            <span class="hint">GPA out of 5.00 or percentage</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- program selection -->
+                <div class="section">
+                    <h3 class="section-heading">
+                        <span class="sec-num">4</span>
+                        Program Selection
+                    </h3>
+                    <div class="row">
+                        <div class="field">
+                            <label for="dept" class="req">Select Department</label>
+                            <select id="dept" name="dept" required>
+                                <option value="">-- Choose Department --</option>
+                                <optgroup label="Faculty of Engineering">
+                                    <option value="cse">Computer Science & Engineering</option>
+                                    <option value="eee">Electrical & Electronic Engineering</option>
+                                    <option value="civil">Civil Engineering</option>
+                                    <option value="mech">Mechanical Engineering</option>
+                                </optgroup>
+                                <optgroup label="Faculty of Business">
+                                    <option value="bba">Business Administration</option>
+                                    <option value="acct">Accounting & Finance</option>
+                                    <option value="mkt">Marketing</option>
+                                </optgroup>
+                                <optgroup label="Faculty of Science">
+                                    <option value="phy">Physics</option>
+                                    <option value="chem">Chemistry</option>
+                                    <option value="math">Mathematics</option>
+                                    <option value="bio">Biology</option>
+                                </optgroup>
+                                <optgroup label="Faculty of Arts">
+                                    <option value="eng">English</option>
+                                    <option value="eco">Economics</option>
+                                    <option value="psy">Psychology</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <div class="field">
+                            <label>Additional Interests</label>
+                            <div class="check-options">
+                                <div class="check-opt">
+                                    <input type="checkbox" id="int_res" name="interests" value="research">
+                                    <label for="int_res">Research</label>
+                                </div>
+                                <div class="check-opt">
+                                    <input type="checkbox" id="int_intern" name="interests" value="internship">
+                                    <label for="int_intern">Internship</label>
+                                </div>
+                                <div class="check-opt">
+                                    <input type="checkbox" id="int_schol" name="interests" value="scholarship">
+                                    <label for="int_schol">Scholarship</label>
+                                </div>
+                                <div class="check-opt">
+                                    <input type="checkbox" id="int_club" name="interests" value="clubs">
+                                    <label for="int_club">Clubs & Activities</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- document upload -->
+                <div class="section">
+                    <h3 class="section-heading">
+                        <span class="sec-num">5</span>
+                        Upload Documents
+                    </h3>
+                    <div class="row">
+                        <div class="field">
+                            <label for="photo" class="req">Passport Size Photo</label>
+                            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" required>
+                            <span class="hint">JPG or PNG format, max 2MB</span>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="docs">Academic Transcript</label>
+                            <input type="file" id="docs" name="docs" accept=".pdf,.doc,.docx">
+                            <span class="hint">PDF or Word file, max 5MB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- personal statement -->
+                <div class="section">
+                    <h3 class="section-heading">
+                        <span class="sec-num">6</span>
+                        Personal Statement
+                    </h3>
+                    <div class="row">
+                        <div class="field wide">
+                            <label for="essay" class="req">Why do you want to study at USET?</label>
+                            <textarea id="essay" name="essay" placeholder="Write about your goals, achievements, and motivation for choosing this university..." required minlength="100" maxlength="2000"></textarea>
+                            <span class="hint">Min 100 characters, max 2000 characters</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- agreement and buttons -->
+                <div class="section">
+                    <div class="field">
+                        <div class="check-opt">
+                            <input type="checkbox" id="agree" name="agree" required>
+                            <label for="agree" class="req">I confirm that all information is true and I agree to the terms & conditions.</label>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-area">
+                        <button type="submit" class="btn btn-submit">Submit Application</button>
+                        <button type="reset" class="btn btn-reset">Reset Form</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 University of Skill Enrichment and Technology (USET)</p>
+        <p>CSE445: Web Application & Internet | Created by Md. Tasnimul Karim</p>
+    </footer>
+
+</body>
+</html>
